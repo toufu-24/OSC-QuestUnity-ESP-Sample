@@ -29,8 +29,6 @@ public class SendMessage : MonoBehaviour
         {
             // Debug.Log("Space key was pressed."); // ログを出力
             _client.Send("/sample", "Hello, I am Windows!"); // OSCでメッセージを送信
-            _client.Send("/sample", 123); // OSCでメッセージを送信
-            _client.Send("/sample", 1.7f); // OSCでメッセージを送信
         }
         // コントローラのプライマリボタン（例: OculusのAボタン）が押された場合
         else if (InputDevices.GetDeviceAtXRNode(ControllerNode) // 指定されたXRデバイス（右手コントローラ）の状態を取得
