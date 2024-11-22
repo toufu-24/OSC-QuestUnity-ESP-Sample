@@ -1,1 +1,1 @@
-コード類は全てAssets/Scripts内に置いてあり，PythonやESPのコードもそこにあるので活用してください．
+コード類は全てAssets/Scripts内に置いてあります．PythonやESPのコードもそこにあるので活用してください．
