@@ -99,11 +99,20 @@ OscMessage parseOscMessage(char* packet, int packetSize) {
   } 
   // 型タグが存在し、"f"（浮動小数点）であることを確認
   else if (packet[typeTagPos] == ',' && packet[typeTagPos + 1] == 'f') {
-    // 値の位置を取得して浮動小数点数として読み取る（型タグの4バイト後が値の開始位置）
-    int valuePos = padSize(typeTagPos + 2);
-    memcpy(&message.floatValue, packet + valuePos, sizeof(message.floatValue));
-    message.floatValue = ntohl(message.floatValue);  // ネットワークバイトオーダーをホストバイトオーダーに変換
-    Serial.println("Received float value: " + String(message.floatValue));
+      // 値の位置を取得して浮動小数点数として読み取る（型タグの4バイト後が値の開始位置）
+      int valuePos = padSize(typeTagPos + 2);
+
+      // ネットワークバイトオーダーからホストバイトオーダーに変換
+      uint32_t networkOrderValue;
+      memcpy(&networkOrderValue, packet + valuePos, sizeof(networkOrderValue));
+      networkOrderValue = ntohl(networkOrderValue);  // ネットワークオーダーをホストオーダーに変換
+
+      // 変換した値を浮動小数点型にキャスト
+      float hostOrderFloatValue;
+      memcpy(&hostOrderFloatValue, &networkOrderValue, sizeof(hostOrderFloatValue));
+
+      message.floatValue = hostOrderFloatValue;
+      Serial.println("Received float value: " + String(message.floatValue));
   }
   // 型タグが存在し、"s"（文字列）であることを確認
   else if (packet[typeTagPos] == ',' && packet[typeTagPos + 1] == 's') {
